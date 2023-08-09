@@ -10,11 +10,15 @@ struct Display
     void (*destroy)();
     void *data;
 };
-struct ram
+
+typedef struct Ram Ram;
+struct Ram
 {
-    unsigned char memory[4096];
+    void *memory;
+    void (*set)(Ram *ram, int index, unsigned char value);
+    unsigned char (*get)(Ram *ram, int index);
+    void (*init)();
 };
 typedef struct Display Display;
-typedef struct ram ram;
 
 #endif
