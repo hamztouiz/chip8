@@ -3,10 +3,9 @@ display := $(wildcard src/display/*.c)
 cpu := src/cpu/*.c
 memory := src/memory/*.c
 keyboards := src/keyboards/*.c
-build := $(wildcard build/*.o)
 CFLAGS := -Wall -Wextra -Werror -pedantic -std=c99 -g
 all: display.o cpu.o memory.o keyboards.o
-	gcc $(main)  $(build)  -o bin/main -DDEBUG=1 `sdl2-config --cflags --libs`
+	gcc $(main) $(wildcard build/*.o)  -o bin/main -DDEBUG=1 `sdl2-config --cflags --libs`
 
 prod: display.o cpu.o memory.o keyboards.o
 	gcc $(main) -o bin/main -DDEBUG=0 `sdl2-config --cflags --libs`
