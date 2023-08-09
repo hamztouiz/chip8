@@ -1,9 +1,0 @@
-{
-    "C_Cpp.errorSquiggles": "disabled",
-    "files.associations": {
-        "chip8.h": "c",
-        "display.h": "c",
-        "stdlib.h": "c",
-        "sdl.h": "c"
-    }
-}
