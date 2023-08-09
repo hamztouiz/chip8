@@ -19,6 +19,7 @@ void display_match(Display *display)
 
 void display_init(Display *display)
 {
+    SDL_Renderer *renderer;
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
         printf("Error initializing SDL: %s\n", SDL_GetError());
@@ -30,6 +31,17 @@ void display_init(Display *display)
         printf("Error creating window: %s\n", SDL_GetError());
         exit(1);
     }
+    renderer = SDL_CreateRenderer(display->data, -1, SDL_TEXTUREACCESS_TARGET);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+    SDL_Rect r;
+    r.x = 0;
+    r.y = 0;
+    r.w = 40;
+    r.h = 40;
+    SDL_RenderFillRect(renderer, &r);
+    SDL_RenderPresent(renderer);
 }
 
 void display_quit(Display *display)
