@@ -11,12 +11,12 @@ struct Display
     void *data;
 };
 
-typedef struct Ram Ram;
-struct Ram
+typedef struct Memory Memory;
+struct Memory
 {
     void *memory;
-    void (*set)(Ram *ram, int index, unsigned char value);
-    unsigned char (*get)(Ram *ram, int index);
+    void (*set)(Memory *ram, int index, unsigned char value);
+    unsigned char (*get)(Memory *ram, int index);
     void (*init)();
 };
 typedef struct Display Display;

@@ -2,24 +2,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-void Ram_match(Ram *Ram)
+void Memory_match(Memory *Memory)
 {
-    Ram->memory = (unsigned char *)malloc(sizeof(unsigned char) * 4096);
-    Ram->set = Ram_set;
-    Ram->get = Ram_get;
-    Ram->init = Ram_init;
+    Memory->memory = (unsigned char *)malloc(sizeof(unsigned char) * 4096);
+    Memory->set = Memory_set;
+    Memory->get = Memory_get;
+    Memory->init = Memory_init;
 }
-void Ram_init(Ram *Ram)
+void Memory_init(Memory *Memory)
 {
-    memset(Ram->memory, 0, sizeof(Ram->memory));
+    memset(Memory->memory, 0, sizeof(Memory->memory));
 }
-void Ram_set(Ram *Ram, int index, unsigned char value)
+void Memory_set(Memory *Memory, int index, unsigned char value)
 {
-    ((unsigned char *)Ram->memory)[index] = value;
+    ((unsigned char *)Memory->memory)[index] = value;
 }
 
-unsigned char Ram_get(Ram *Ram, int index)
+unsigned char Memory_get(Memory *Memory, int index)
 {
 
-    return ((unsigned char *)Ram->memory)[index];
+    return ((unsigned char *)Memory->memory)[index];
 }

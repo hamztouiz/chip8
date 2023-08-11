@@ -3,8 +3,8 @@
 
 #define RAM_SIZE 0xFFF // 4096 bytes
 #include "../chip8.h"
-void Ram_match(Ram *Ram);
-void Ram_init(Ram *Ram);
-void Ram_set(Ram *Ram, int index, unsigned char value);
-unsigned char Ram_get(Ram *Ram, int index);
+void Memory_match(Memory *Memory);
+void Memory_init(Memory *Memory);
+void Memory_set(Memory *Memory, int index, unsigned char value);
+unsigned char Memory_get(Memory *Memory, int index);
 #endif

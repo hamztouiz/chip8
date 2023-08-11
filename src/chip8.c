@@ -9,16 +9,16 @@
         printf("DEBUG: %s:%d: %s\n", __FILE__, __LINE__, char);
 
 Display chip8_display;
-Ram chip8_Ram;
+Memory chip8_Memory;
 
 void main()
 {
 
     display_match(&chip8_display);
-    Ram_match(&chip8_Ram);
+    Memory_match(&chip8_Memory);
 
     chip8_display.init(&chip8_display);
-    chip8_Ram.init(&chip8_Ram);
+    chip8_Memory.init(&chip8_Memory);
 
     while (1)
     {
