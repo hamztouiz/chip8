@@ -4,9 +4,6 @@
 #include "chip8.h"
 #include "display/display.h"
 #include "memory/ram.h"
-#define IFDEBUG(char) \
-    if (DEBUG)        \
-        printf("DEBUG: %s:%d: %s\n", __FILE__, __LINE__, char);
 
 Display chip8_display;
 Memory chip8_Memory;

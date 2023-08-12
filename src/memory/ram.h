@@ -1,7 +1,7 @@
 #ifndef RAM_H
 #define RAM_H
 
-#define RAM_SIZE 0xFFF // 4096 bytes
+#define MEMORY_SIZE 0x1000 // 4096 bytes
 #include "../chip8.h"
 void Memory_match(Memory *Memory);
 void Memory_init(Memory *Memory);

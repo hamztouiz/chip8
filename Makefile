@@ -4,8 +4,13 @@ cpu := src/cpu/*.c
 memory := src/memory/*.c
 keyboards := src/keyboards/*.c
 CFLAGS := -Wall -Wextra -Werror -pedantic -std=c99 -g
+test := src/test.c
+
 all: display.o cpu.o memory.o keyboards.o
 	gcc $(main) $(wildcard build/*.o)  -o bin/main -DDEBUG=1 `sdl2-config --cflags --libs`
+
+test: display.o cpu.o memory.o keyboards.o
+	gcc $(test) $(wildcard build/*.o)  -o bin/test -DDEBUG=1 `sdl2-config --cflags --libs`
 
 prod: display.o cpu.o memory.o keyboards.o
 	gcc $(main) -o bin/main -DDEBUG=0 `sdl2-config --cflags --libs`
@@ -17,7 +22,9 @@ cpu.o: src/cpu/*.c
 	gcc $(cpu) -o build/cpu.o -c `sdl2-config --cflags --libs`
 
 memory.o: src/memory/*.c
-	gcc $(memory) -o build/memory.o -c `sdl2-config --cflags --libs`
+	for file in $(memory); do \
+		gcc $$file -o build/$$(basename $$file .c).o -c `sdl2-config --cflags --libs`; \
+	done
 
 keyboards.o: src/keyboards/*.c
 	gcc $(keyboards) -o build/keyboards.o -c `sdl2-config --cflags --libs`

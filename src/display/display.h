@@ -7,4 +7,5 @@
 void display_match(Display *display);
 void display_init(Display *display);
 void display_quit(Display *display);
+void display_destroy(Display *display);
 #endif
