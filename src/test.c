@@ -26,18 +26,18 @@ void main()
     chip8_display.init(&chip8_display);
 
     printf("### SETTING MEMORY ###\n");
-    chip8_Memory.set(&chip8_Memory, 0, 1);
+    chip8_Memory.set(&chip8_Memory, 0x201, 1);
     printf("Set memory at index 0 to 1\n");
     printf("### SETTING MEMORY ###\n \n");
 
     printf("### GETTING MEMORY ###\n");
-    unsigned char test_memory = chip8_Memory.get(&chip8_Memory, 0);
-    printf("Memory at index 0 is %d\n", test_memory);
+    unsigned char *test_memory = chip8_Memory.get(&chip8_Memory, 0, 0);
+    printf("Memory at index 0 is %d\n", *test_memory);
     printf("### GETTING MEMORY ###\n \n");
 
     printf("### GETTING MEMORY ###\n");
-    test_memory = chip8_Memory.get(&chip8_Memory, 4095);
-    printf("Memory at index 4095 is %d\n", test_memory);
+    test_memory = chip8_Memory.get(&chip8_Memory, 4095, 0);
+    printf("Memory at index 4095 is %d\n", *test_memory);
     printf("### GETTING MEMORY ###\n \n");
 
     for (int i = 0; i < 16; i++)
@@ -73,6 +73,9 @@ void main()
         printf("### GETTING REGISTERVX ###\n \n");
     }
     // wait press key
+    unsigned char *sprite = chip8_Memory.get(&chip8_Memory, 5*10, 5);
+    chip8_display.drawSprite(&chip8_display, 0, 0, sprite, 5);
+    chip8_display.print(&chip8_display);
     printf("Press any key to continue\n");
     while (chip8_keyboard.event(&chip8_keyboard) != '0')
     {

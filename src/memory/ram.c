@@ -61,10 +61,19 @@ void Memory_set(Memory *Memory, int index, unsigned char value)
     
 }
 
-unsigned char Memory_get(Memory *Memory, int index)
+unsigned char* Memory_get(Memory *Memory, int index, int length)
 {
     Memory_check(Memory, index);
-    return ((unsigned char *)Memory->memory)[index];
+    char *str = (char *)malloc(sizeof(char) * length);
+    if (str == NULL)
+    {
+        printf("\033[1;31m");
+        printf("Error allocating memory\n");
+        printf("\033[0m");
+        exit(1);
+    }
+    memcpy(str, ((unsigned char *)Memory->memory) + index, length);
+    return str;
 }
 
 void Memory_destroy(Memory *Memory)

@@ -14,6 +14,15 @@ typedef struct CPU CPU;
 typedef struct Display Display;
 typedef struct Stack Stack;
 typedef struct Keyboard Keyboard;
+
+struct CPU
+{
+    void (*init)(CPU *cpu);
+    void (*execute)(CPU *cpu);
+    Memory *memory;
+    Display *display;
+    Keyboard *keyboard;
+};
 struct Keyboard
 {
     unsigned char keys[KEYBOARD_SIZE];
@@ -30,6 +39,12 @@ struct Display
     void (*init)();
     void (*destroy)();
     void *data;
+    unsigned char pixels[64][32];
+    void (*print)(Display *display);
+    void (*set_pixel)(Display *display, int x, int y);
+    void (*clear)(Display *display);
+    unsigned char (*drawSprite)(Display *display, int x, int y, unsigned char *sprite, int n);
+
 };
 struct Stack
 {
@@ -45,7 +60,7 @@ struct Memory
 {
     void *memory;
     void (*set)(Memory *ram, int index, unsigned char value);
-    unsigned char (*get)(Memory *ram, int index);
+    unsigned char* (*get)(Memory *ram, int index, int length);
     void (*init)(Memory *ram);
     unsigned char (*destroy)(Memory *ram);
     unsigned short* PC;

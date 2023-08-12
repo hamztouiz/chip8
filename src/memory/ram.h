@@ -6,5 +6,5 @@
 void Memory_match(Memory *Memory);
 void Memory_init(Memory *Memory);
 void Memory_set(Memory *Memory, int index, unsigned char value);
-unsigned char Memory_get(Memory *Memory, int index);
+unsigned char* Memory_get(Memory *Memory, int index, int length);
 #endif
