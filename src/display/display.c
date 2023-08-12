@@ -102,9 +102,9 @@ unsigned char display_drawSprite(Display *display, int x, int y, unsigned char *
         {
             if ( (byte >> (7 - j)) & 1)
             {
-                display_set_pixel(display, x + j, y + i);
+                display_set_pixel(display, (x + j)%64,( y + i) %32);
             }
-            if (display->pixels[x + j][y + i] == 1)
+            if (display->pixels[(x + j)%64][(y + i)%32] == 1)
             {
                 result = 1;
             }

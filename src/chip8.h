@@ -63,12 +63,16 @@ struct Memory
     unsigned char* (*get)(Memory *ram, int index, int length);
     void (*init)(Memory *ram);
     unsigned char (*destroy)(Memory *ram);
+    void *(*Delay_timer)();
+    void *(*Sound_timer)();
     unsigned short* PC;
-    unsigned char registersVX[REGISTER_SIZE]; // V0 - VF
+    unsigned char registersVX[REGISTER_SIZE]; // V0 - VF*
     unsigned char delay_timer;
     unsigned char sound_timer;
+
     unsigned short  I;
     Stack stack;
+
 };
 
 

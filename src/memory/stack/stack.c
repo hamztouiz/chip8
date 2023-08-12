@@ -11,6 +11,7 @@ void stack_init(Stack *stack)
     }
     stack->pop = stack_pop;
     stack->push = stack_push;
+    IFDEBUG("Initialized stack");
 
 }
 unsigned short stack_pop(Stack *stack)

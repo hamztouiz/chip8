@@ -1,5 +1,6 @@
 #include "ram.h"
-#include "stack.h"
+#include "../stack/stack.h"
+#include "../timer/timer.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -18,6 +19,9 @@ void Memory_match(Memory *Memory)
     Memory->set = Memory_set;
     Memory->get = Memory_get;
     Memory->init = Memory_init;
+    Memory->Delay_timer = Timer_delay;
+    Memory->Sound_timer = Timer_sound;
+
 }
 
 static void Memory_check(Memory *Memory, int index)

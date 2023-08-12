@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
+#include <pthread.h>
 #include "chip8.h"
 #include "display/display.h"
-#include "memory/ram.h"
+#include "memory/ram/ram.h"
 #include "keyboards/keyboards.h"
 #define IFDEBUG(char) \
     if (DEBUG)        \
@@ -24,6 +25,11 @@ void main()
 
     display_match(&chip8_display);
     chip8_display.init(&chip8_display);
+
+    chip8_Memory.delay_timer = 255;
+    chip8_Memory.sound_timer = 255;
+
+    pthread_t thread_id;
 
     printf("### SETTING MEMORY ###\n");
     chip8_Memory.set(&chip8_Memory, 0x201, 1);
@@ -74,9 +80,12 @@ void main()
     }
     // wait press key
     unsigned char *sprite = chip8_Memory.get(&chip8_Memory, 5*10, 5);
-    chip8_display.drawSprite(&chip8_display, 0, 0, sprite, 5);
+    chip8_display.drawSprite(&chip8_display, 32, 16, sprite, 5);
+    chip8_display.drawSprite(&chip8_display, 63, 31, sprite, 5);
     chip8_display.print(&chip8_display);
     printf("Press any key to continue\n");
+    pthread_create(&thread_id, NULL, chip8_Memory.Sound_timer, NULL);
+
     while (chip8_keyboard.event(&chip8_keyboard) != '0')
     {
         continue;
