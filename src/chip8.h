@@ -17,18 +17,19 @@ typedef struct Keyboard Keyboard;
 
 struct CPU
 {
-    void (*init)(CPU *cpu);
-    void (*execute)(CPU *cpu);
-    Memory *memory;
-    Display *display;
-    Keyboard *keyboard;
+    unsigned char* (*fetch)(CPU *cpu, Memory *memory);
+    void (*decode)(CPU *cpu, unsigned char *instruction);
+    void (*execute)(CPU *cpu, Memory *memory,Display *display, Keyboard *keyboard, unsigned char * niblle);
 };
 struct Keyboard
 {
     unsigned char keys[KEYBOARD_SIZE];
     const char*maps;
     void (*destroy)(Keyboard *keyboard);
-    char (*event)(Keyboard *keyboard);
+    void *(*event)();
+    char (*get)(Keyboard *keyboard, char key);
+    char (*keyboard_get_is_change)(Keyboard *keyboard);
+
 };
 
 struct Display
@@ -63,9 +64,11 @@ struct Memory
     unsigned char* (*get)(Memory *ram, int index, int length);
     void (*init)(Memory *ram);
     unsigned char (*destroy)(Memory *ram);
+    // Timers
     void *(*Delay_timer)();
     void *(*Sound_timer)();
-    unsigned short* PC;
+    // Registers
+    unsigned short PC; 
     unsigned char registersVX[REGISTER_SIZE]; // V0 - VF*
     unsigned char delay_timer;
     unsigned char sound_timer;

@@ -6,6 +6,7 @@
 #include "display/display.h"
 #include "memory/ram/ram.h"
 #include "keyboards/keyboards.h"
+#include <unistd.h>
 #define IFDEBUG(char) \
     if (DEBUG)        \
         printf("DEBUG: %s:%d: %s\n", __FILE__, __LINE__, char);
@@ -26,10 +27,8 @@ void main()
     display_match(&chip8_display);
     chip8_display.init(&chip8_display);
 
-    chip8_Memory.delay_timer = 255;
-    chip8_Memory.sound_timer = 255;
-
-    pthread_t thread_id;
+    pthread_t thread_id, thread_id2;
+    pthread_create(&thread_id, NULL, chip8_keyboard.event, NULL);
 
     printf("### SETTING MEMORY ###\n");
     chip8_Memory.set(&chip8_Memory, 0x201, 1);
@@ -85,11 +84,12 @@ void main()
     chip8_display.print(&chip8_display);
     printf("Press any key to continue\n");
     pthread_create(&thread_id, NULL, chip8_Memory.Sound_timer, NULL);
+    usleep(4000000);
 
-    while (chip8_keyboard.event(&chip8_keyboard) != '0')
-    {
-        continue;
-    }
+    printf("### SETTING DELAY TIMER ###\n");
+    chip8_Memory.delay_timer = 255;
+    chip8_Memory.sound_timer = 255;
+    chip8_keyboard.keyboard_get_is_change(&chip8_keyboard);
 
     
 
