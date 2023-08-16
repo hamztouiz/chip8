@@ -7,7 +7,7 @@ CFLAGS := -Wall -Wextra -Werror -pedantic -std=c99 -g -lncurses
 test := src/test.c
 
 all: display.o cpu.o memory.o keyboards.o
-	gcc $(main) $(wildcard build/*.o)  -o bin/main -DDEBUG=1 `sdl2-config --cflags --libs`
+	gcc $(main) $(wildcard build/*.o)  -o bin/main -DDEBUG=1 -lSDL2_mixer `sdl2-config --cflags --libs`
 
 test: display.o cpu.o memory.o keyboards.o
 	gcc $(test) $(wildcard build/*.o)  -o bin/test -DDEBUG=1 -lSDL2_mixer `sdl2-config --cflags --libs`

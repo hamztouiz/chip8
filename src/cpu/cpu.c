@@ -15,14 +15,14 @@ void cpu_match(CPU * cpu)
  unsigned char* cpu_fetch(CPU* cpu, Memory* memory)
 {
     unsigned char *instruction = NULL;
-    instruction = memory->get(memory,memory->PC, 2);
+    instruction = memory->get(*memory,memory->PC, 2);
     memory->PC= memory->PC + 2;
     return instruction;
 
 }
-void cpu_decode(CPU* cpu , unsigned char *instruction)
+unsigned char* cpu_decode(CPU* cpu , unsigned char *instruction)
 {
-    unsigned char nibble[4] = {0};
+    unsigned char *nibble = malloc(sizeof(unsigned char) * 4);
     for( unsigned char i =0; i< 4; i++)
     {
         unsigned char tmp = 0 ; 
@@ -31,15 +31,15 @@ void cpu_decode(CPU* cpu , unsigned char *instruction)
                 tmp = tmp >> 4;
 
         nibble[i] = tmp & 0b00001111 ;
+
     }
-    *instruction = *nibble;
+    return nibble;
 }
-void cpu_execute(CPU* cpu, Memory* memory, Display* display, Keyboard* keyboard, unsigned char * niblle) 
+void cpu_execute(CPU* cpu, Memory* memory, Display* display, Keyboard* keyboard, unsigned char * niblle, unsigned char *instruction)
 {
 unsigned short opcode = 0;
-memcpy(&opcode, niblle, 2);
+opcode = instruction[0] << 8 | instruction[1];
 
-    
  switch (niblle[0])
 {
     case 0 :
@@ -146,16 +146,20 @@ memcpy(&opcode, niblle, 2);
         memory->registersVX[niblle[1]] = (rand()%256) & (opcode & 0x00FF);
         break;
     case 0xD : // DRW Vx, Vy, nibble
-        memory->registersVX[0xF] = display->drawSprite(display, memory->registersVX[niblle[1]], memory->registersVX[niblle[2]], memory->get(memory, memory->I, niblle[3]), niblle[3]);
+        memory->registersVX[0xF] = display->drawSprite(display, memory->registersVX[niblle[1]], memory->registersVX[niblle[2]], memory->get(*memory, memory->I, niblle[3]), niblle[3]);
         break;
     case 0xE :
         switch (niblle[3])
         {
             case 0xE :
-            /* code */
+                if (keyboard->get(keyboard, memory->registersVX[niblle[1]]))
+                    memory->PC = memory->PC + 2;
+                break;
             break;
             case 0x1 :
-            /* code */
+                if (!keyboard->get(keyboard, memory->registersVX[niblle[1]]))
+                    memory->PC = memory->PC + 2;
+                break;
             break;
             default:
                     print_error_opcode(opcode);
@@ -169,6 +173,7 @@ memcpy(&opcode, niblle, 2);
             memory->registersVX[niblle[1]] = memory->delay_timer;
             break;
             case 0x0A :
+            memory->registersVX[niblle[1]] = keyboard->keyboard_get_is_change(keyboard);
             break;
             case 0x15 :
             memory->delay_timer = memory->registersVX[niblle[1]];
@@ -193,7 +198,7 @@ memcpy(&opcode, niblle, 2);
                 break;
             case 0x65 :
                 for (int i = 0; i <= niblle[1]; i++)
-                    memory->registersVX[i] = memory->get(memory, memory->I + i, 1)[0];
+                    memory->registersVX[i] = memory->get(*memory, memory->I + i, 1)[0];
                 break;
             default:
                     print_error_opcode(opcode);
@@ -211,5 +216,6 @@ void static print_error_opcode(unsigned short opcode)
     printf("\033[1;31m");
     printf("Error opcode : %x\n", opcode);
     printf("\033[0m");
-    exit(1);
+    //exit(1);
+
 }

@@ -18,8 +18,8 @@ typedef struct Keyboard Keyboard;
 struct CPU
 {
     unsigned char* (*fetch)(CPU *cpu, Memory *memory);
-    void (*decode)(CPU *cpu, unsigned char *instruction);
-    void (*execute)(CPU *cpu, Memory *memory,Display *display, Keyboard *keyboard, unsigned char * niblle);
+    unsigned char * (*decode)(CPU *cpu, unsigned char *instruction);
+    void (*execute)(CPU *cpu, Memory *memory,Display *display, Keyboard *keyboard, unsigned char * niblle, unsigned char *instruction);
 };
 struct Keyboard
 {
@@ -61,7 +61,7 @@ struct Memory
 {
     void *memory;
     void (*set)(Memory *ram, int index, unsigned char value);
-    unsigned char* (*get)(Memory *ram, int index, int length);
+    unsigned char* (*get)(Memory ram, int index, int length);
     void (*init)(Memory *ram);
     unsigned char (*destroy)(Memory *ram);
     // Timers

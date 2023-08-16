@@ -8,7 +8,7 @@
 
 void cpu_match(CPU * cpu);
 unsigned char* cpu_fetch(CPU* cpu, Memory* memory);
-void cpu_decode(CPU* cpu , unsigned char *instruction);
-void cpu_execute(CPU* cpu, Memory* memory, Display* display, Keyboard* keyboard, unsigned char * niblle);
+unsigned char* cpu_decode(CPU* cpu , unsigned char *instruction);
+void cpu_execute(CPU* cpu, Memory* memory, Display* display, Keyboard* keyboard, unsigned char * niblle, unsigned char *instruction);
 
 #endif

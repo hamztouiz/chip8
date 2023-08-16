@@ -16,6 +16,7 @@ void Memory_match(Memory *Memory)
         printf("\033[0m");
         exit(1);
     }
+    Memory->PC = 0x200;
     Memory->set = Memory_set;
     Memory->get = Memory_get;
     Memory->init = Memory_init;
@@ -24,7 +25,7 @@ void Memory_match(Memory *Memory)
 
 }
 
-static void Memory_check(Memory *Memory, int index)
+static void Memory_check( int index)
 {
     assert(index >= 0 && index < MEMORY_SIZE);
 }
@@ -59,15 +60,15 @@ void Memory_init(Memory *Memory)
 void Memory_set(Memory *Memory, int index, unsigned char value)
 {
  
-    Memory_check(Memory, index);
+    Memory_check(index);
     ((unsigned char *)Memory->memory)[index] = value;
 
     
 }
 
-unsigned char* Memory_get(Memory *Memory, int index, int length)
+unsigned char* Memory_get(Memory Memory, int index, int length)
 {
-    Memory_check(Memory, index);
+    Memory_check(index);
     char *str = (char *)malloc(sizeof(char) * length);
     if (str == NULL)
     {
@@ -76,7 +77,7 @@ unsigned char* Memory_get(Memory *Memory, int index, int length)
         printf("\033[0m");
         exit(1);
     }
-    memcpy(str, ((unsigned char *)Memory->memory) + index, length);
+    memcpy(str, ((unsigned char *)Memory.memory) + index, length);
     return str;
 }
 

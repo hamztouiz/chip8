@@ -64,15 +64,38 @@ void display_clear(Display *display)
             display->pixels[i][j] = 0;
         }
     }
+    display_print(display);
 }
 
 void display_print(Display *display)
 {
     SDL_Renderer *renderer;
+    if (display->data == NULL)
+    {
+        printf("Error creating renderer: %s\n", SDL_GetError());
+        exit(1);
+    }
     renderer = SDL_CreateRenderer(display->data, -1, SDL_TEXTUREACCESS_TARGET);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+    if (renderer == NULL)
+    {
+        printf("Error creating renderer: %s\n", SDL_GetError());
+        exit(1);
+    }
+    if (  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0) != 0)
+    {
+        printf("Error setting blend mode: %s\n", SDL_GetError());
+        exit(1);
+    }
+    if (SDL_RenderClear(renderer) != 0)
+    {
+        printf("Error clearing renderer: %s\n", SDL_GetError());
+        exit(1);
+    }
+    if (SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255) != 0)
+    {
+        printf("Error setting blend mode: %s\n", SDL_GetError());
+        exit(1);
+    }
     for (int i = 0; i < 64; i++)
     {
         for(int j=0; j < 32; j++)
@@ -84,11 +107,17 @@ void display_print(Display *display)
                 r.y = j* 10;
                 r.w = 10;
                 r.h = 10;
-                SDL_RenderFillRect(renderer, &r);
+                if (SDL_RenderFillRect(renderer, &r) != 0)
+                {
+                    printf("Error drawing rect: %s\n", SDL_GetError());
+                    exit(1);
+                }
             }
         }
     }
     SDL_RenderPresent(renderer);
+    SDL_DestroyRenderer(renderer);
+
 }
 
 unsigned char display_drawSprite(Display *display, int x, int y, unsigned char *sprite, int n)
@@ -112,5 +141,6 @@ unsigned char display_drawSprite(Display *display, int x, int y, unsigned char *
         }
 
     }
+    display_print(display);
     return result;
 }
