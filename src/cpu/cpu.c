@@ -39,7 +39,7 @@ void cpu_execute(CPU* cpu, Memory* memory, Display* display, Keyboard* keyboard,
 {
 unsigned short opcode = 0;
 opcode = instruction[0] << 8 | instruction[1];
-
+printf("opcode : %x\n", opcode);
  switch (niblle[0])
 {
     case 0 :
@@ -146,7 +146,9 @@ opcode = instruction[0] << 8 | instruction[1];
         memory->registersVX[niblle[1]] = (rand()%256) & (opcode & 0x00FF);
         break;
     case 0xD : // DRW Vx, Vy, nibble
-        memory->registersVX[0xF] = display->drawSprite(display, memory->registersVX[niblle[1]], memory->registersVX[niblle[2]], memory->get(*memory, memory->I, niblle[3]), niblle[3]);
+        unsigned char *sprite = memory->get(*memory, memory->I, niblle[3]);
+        memory->registersVX[0xF] = display->drawSprite(display, memory->registersVX[niblle[1]], memory->registersVX[niblle[2]],sprite, niblle[3]);
+        free(sprite);
         break;
     case 0xE :
         switch (niblle[3])
@@ -197,8 +199,10 @@ opcode = instruction[0] << 8 | instruction[1];
                     memory->set(memory, memory->I + i, memory->registersVX[i]);
                 break;
             case 0x65 :
+                unsigned char *tmp = memory->get(*memory, memory->I, niblle[1]);
                 for (int i = 0; i <= niblle[1]; i++)
-                    memory->registersVX[i] = memory->get(*memory, memory->I + i, 1)[0];
+                    memory->registersVX[i] = tmp[i];
+                free(tmp);
                 break;
             default:
                     print_error_opcode(opcode);
