@@ -15,6 +15,7 @@ void display_match(Display *display)
     display->init = display_init;
     display->destroy = display_quit;
     display->data = (SDL_Window *)NULL;
+    display->renderer = (SDL_Renderer *)NULL;
     display->print = display_print;
     display->set_pixel = display_set_pixel;
     display->clear = display_clear;
@@ -43,10 +44,17 @@ void display_init(Display *display)
         printf("Error creating window: %s\n", SDL_GetError());
         exit(1);
     }
+        display->renderer = SDL_CreateRenderer(display->data, -1, SDL_TEXTUREACCESS_TARGET);
+    if (display->renderer == NULL)
+    {
+        printf("Error creating renderer: %s\n", SDL_GetError());
+        exit(1);
+    }
 }
 
 void display_quit(Display *display)
 {
+    SDL_DestroyRenderer(display->renderer);
     SDL_DestroyWindow(display->data);
     SDL_Quit();
 }
@@ -69,29 +77,22 @@ void display_clear(Display *display)
 
 void display_print(Display *display)
 {
-    SDL_Renderer *renderer;
     if (display->data == NULL)
     {
         printf("Error creating renderer: %s\n", SDL_GetError());
         exit(1);
     }
-    renderer = SDL_CreateRenderer(display->data, -1, SDL_TEXTUREACCESS_TARGET);
-    if (renderer == NULL)
-    {
-        printf("Error creating renderer: %s\n", SDL_GetError());
-        exit(1);
-    }
-    if (  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0) != 0)
+    if (  SDL_SetRenderDrawColor(display->renderer, 0, 0, 0, 0) != 0)
     {
         printf("Error setting blend mode: %s\n", SDL_GetError());
         exit(1);
     }
-    if (SDL_RenderClear(renderer) != 0)
+    if (SDL_RenderClear(display->renderer) != 0)
     {
         printf("Error clearing renderer: %s\n", SDL_GetError());
         exit(1);
     }
-    if (SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255) != 0)
+    if (SDL_SetRenderDrawColor(display->renderer, 255, 255, 255, 255) != 0)
     {
         printf("Error setting blend mode: %s\n", SDL_GetError());
         exit(1);
@@ -107,7 +108,7 @@ void display_print(Display *display)
                 r.y = j* 10;
                 r.w = 10;
                 r.h = 10;
-                if (SDL_RenderFillRect(renderer, &r) != 0)
+                if (SDL_RenderFillRect(display->renderer, &r) != 0)
                 {
                     printf("Error drawing rect: %s\n", SDL_GetError());
                     exit(1);
@@ -115,8 +116,7 @@ void display_print(Display *display)
             }
         }
     }
-    SDL_RenderPresent(renderer);
-    SDL_DestroyRenderer(renderer);
+    SDL_RenderPresent(display->renderer);
 
 }
 

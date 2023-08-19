@@ -40,6 +40,7 @@ struct Display
     void (*init)();
     void (*destroy)();
     void *data;
+    void *renderer;
     unsigned char pixels[64][32];
     void (*print)(Display *display);
     void (*set_pixel)(Display *display, int x, int y);
