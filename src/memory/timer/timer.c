@@ -12,7 +12,7 @@ void *Timer_delay()
     {
         if(chip8_Memory.delay_timer > 0)
         {
-            usleep(10);
+            usleep(1000 * 100 / 6);
             chip8_Memory.delay_timer--;
         } 
 
@@ -43,7 +43,7 @@ if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
                 // in  red
                 printf("Error: %s\n", Mix_GetError());
             }
-            usleep(10);
+            usleep(1000 * 100 / 6);
             chip8_Memory.sound_timer--;
 //            IFDEBUG("Sound timer: sound_timer");
 

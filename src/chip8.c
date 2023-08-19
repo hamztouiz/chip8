@@ -38,7 +38,7 @@ void main()
 
 
     keyboard_match(&chip8_keyboard);
-    chip8_keyboard.maps = "1234azerqsdfwxcv";
+    chip8_keyboard.maps = "1234PROrqsdfwxcv";
 
     display_match(&chip8_display);
     chip8_display.init(&chip8_display);

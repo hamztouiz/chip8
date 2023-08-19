@@ -19,7 +19,6 @@ void keyboard_match(Keyboard *keyboard)
 void *keyboard_event()
 {
     SDL_Event event;
-    IFDEBUG("Event polled");
         while (SDL_PollEvent(&event))
         {
 
@@ -31,12 +30,10 @@ void *keyboard_event()
             if (event.type == SDL_KEYDOWN)
             {
                 keyboard_down(event.key.keysym.sym);
-                IFDEBUG("Key pressed");
             }
             else if (event.type == SDL_KEYUP)
             {
                 keyboard_up(event.key.keysym.sym);
-                IFDEBUG("Key released");
             }
         }
 
@@ -44,8 +41,9 @@ void *keyboard_event()
 static void keyboard_up( SDL_Keycode key)
 {
     uint8_t i;
+    uint8_t tmp = key;
     for (i = 0; i < KEYBOARD_SIZE; i++)
-        if (chip8_keyboard.maps[i] == key)
+        if (chip8_keyboard.maps[i] == (uint8_t) key)
             break;
     if (i == KEYBOARD_SIZE)
     {
@@ -60,13 +58,17 @@ static void keyboard_up( SDL_Keycode key)
 static void keyboard_down(SDL_Keycode key)
 {
     uint8_t i;
+    uint8_t tmp = key;
     for (i = 0; i < KEYBOARD_SIZE; i++)
-        if (chip8_keyboard.maps[i] == key)
+    {    if (chip8_keyboard.maps[i] == tmp)
             break;
+    }
     if (i == KEYBOARD_SIZE)
     {
         printf("\033[1;31m");
         printf("Error: Key not found\n");
+        printf("%c\n", key);
+
         printf("\033[0m");
         return;
     }

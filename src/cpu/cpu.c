@@ -39,7 +39,6 @@ void cpu_execute(CPU* cpu, Memory* memory, Display* display, Keyboard* keyboard,
 {
 unsigned short opcode = 0;
 opcode = instruction[0] << 8 | instruction[1];
-printf("opcode : %x\n", opcode);
  switch (niblle[0])
 {
     case 0 :
