@@ -20,7 +20,6 @@ void *keyboard_event()
 {
     SDL_Event event;
     IFDEBUG("Event polled");
-    while (1)
         while (SDL_PollEvent(&event))
         {
 

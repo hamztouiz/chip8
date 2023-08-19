@@ -13,7 +13,7 @@ test: display.o cpu.o memory.o keyboards.o
 	gcc $(test) $(wildcard build/*.o)  -o bin/test -DDEBUG=1 -lSDL2_mixer `sdl2-config --cflags --libs`
 
 prod: display.o cpu.o memory.o keyboards.o
-	gcc $(main) -o bin/main -DDEBUG=0 `sdl2-config --cflags --libs`
+	gcc $(main) $(wildcard build/*.o)  -o bin/main -DDEBUG=0 -lSDL2_mixer `sdl2-config --cflags --libs`
 
 display.o: src/display/*.c
 	gcc $(display) -o build/display.o -c `sdl2-config --cflags --libs`

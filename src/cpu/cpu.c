@@ -63,11 +63,11 @@ printf("opcode : %x\n", opcode);
         memory->PC = opcode & 0x0FFF;
         break;
     case 3 : // SE Vx, byte
-        if( memory->registersVX[niblle[1]] == opcode & 0x00FF)
+        if( memory->registersVX[niblle[1]] == (opcode & 0x00FF))
             memory->PC = memory->PC + 2;
         break;
     case 4 : // SNE Vx, byte
-        if( memory->registersVX[niblle[1]] != opcode & 0x00FF)
+        if( memory->registersVX[niblle[1]] != (opcode & 0x00FF))
             memory->PC = memory->PC + 2;
         break;
     case 5 : // SE Vx, Vy
@@ -199,10 +199,13 @@ printf("opcode : %x\n", opcode);
                     memory->set(memory, memory->I + i, memory->registersVX[i]);
                 break;
             case 0x65 :
-                unsigned char *tmp = memory->get(*memory, memory->I, niblle[1]);
+
                 for (int i = 0; i <= niblle[1]; i++)
-                    memory->registersVX[i] = tmp[i];
-                free(tmp);
+                {
+                    unsigned char *tmp = memory->get(*memory, memory->I+i,1);
+                    memory->registersVX[i] = *tmp;
+                    free(tmp);
+                }
                 break;
             default:
                     print_error_opcode(opcode);

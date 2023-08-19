@@ -53,7 +53,7 @@ void display_quit(Display *display)
 
 void display_set_pixel(Display *display, int x, int y)
 {
-    display->pixels[x][y] = 1;
+    display->pixels[x][y] ^= 1;
 }
 void display_clear(Display *display)
 {
@@ -131,15 +131,13 @@ unsigned char display_drawSprite(Display *display, int x, int y, unsigned char *
         {
             if ( (byte >> (7 - j)) & 1)
             {
+                if (display->pixels[(x + j)%64][(y + i)%32] == 1)
+                {
+                    result = 1;
+                }
                 display_set_pixel(display, (x + j)%64,( y + i) %32);
             }
-            if (display->pixels[(x + j)%64][(y + i)%32] == 1)
-            {
-                result = 1;
-            }
-
         }
-
     }
     display_print(display);
     return result;

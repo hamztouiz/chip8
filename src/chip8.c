@@ -20,7 +20,7 @@ void main()
 {
 
     //open file and read it
-    FILE *file = fopen("/home/hamzux/projet/chip8/media/roms/ibmLogo.ch8", "rb");
+    FILE *file = fopen("/home/hamzux/projet/chip8/media/roms/INVADERS", "rb");
     if (file == NULL)
     {
         printf("Error: Couldn't open file\n");
@@ -52,7 +52,6 @@ void main()
 
     free(buffer);
     pthread_t thread_id, thread_id2, thread_id3;
-    pthread_create(&thread_id, NULL, chip8_keyboard.event, NULL);
     pthread_create(&thread_id2, NULL, chip8_Memory.Delay_timer, NULL);
     pthread_create(&thread_id3, NULL, chip8_Memory.Sound_timer, NULL);
 
@@ -61,8 +60,8 @@ void main()
  
         unsigned char *instruction = chip8_cpu.fetch(&chip8_cpu, &chip8_Memory);
         unsigned char *niblle = chip8_cpu.decode(&chip8_cpu, instruction);
+        chip8_keyboard.event(&chip8_keyboard);
         chip8_cpu.execute(&chip8_cpu, &chip8_Memory, &chip8_display, &chip8_keyboard, niblle, instruction);
-        usleep(1000);
         free(niblle);
     }
     

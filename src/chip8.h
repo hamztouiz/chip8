@@ -4,7 +4,7 @@
 #define REGISTER_SIZE 16
 #define STACK_SIZE 16
 #define KEYBOARD_SIZE 16
-#define DEBUG 1
+#define DEBUG 0
 #define IFDEBUG(char) \
     if (DEBUG)        \
         printf("DEBUG: %s:%d: %s\n", __FILE__, __LINE__, char);
